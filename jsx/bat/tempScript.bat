@@ -1,0 +1,1 @@
+cd /d D:\workspace\AutoVidEditor\jsx\bat && dir > tempResult.txt
