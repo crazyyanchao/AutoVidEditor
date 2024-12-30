@@ -122,9 +122,12 @@ class NoteOrganizer:
         data_dict = [note.model_dump() for note in result]
         return pd.DataFrame(data_dict)
 
-    def to_json(self, result: List[NoteFormat]) -> str:
+    def to_dict(self, result: List[NoteFormat]) -> List[dict]:
         data_dict = [note.model_dump() for note in result]
-        df = pd.DataFrame(data_dict)
+        return data_dict
+
+    def to_json(self, result: List[NoteFormat]) -> str:
+        df = pd.DataFrame(self.to_dict(result))
         json_result = df.to_json(orient='records', force_ascii=False)  # 'records' 格式每行一个字典
         return json_result
 
@@ -162,8 +165,8 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     load_dotenv()
-    # note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果2.docx")
-    note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果.docx")
+    note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果2.docx")
+    # note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果.docx")
     result = note.run()
     print(result)
     print(note.to_dataframe(result))

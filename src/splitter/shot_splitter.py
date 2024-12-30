@@ -120,9 +120,12 @@ class ShotSplitter:
         data_dict = [note.model_dump() for note in result]
         return pd.DataFrame(data_dict)
 
-    def to_json(self, result: List[ShotFormat]) -> str:
+    def to_dict(self, result: List[ShotFormat]) -> List[dict]:
         data_dict = [note.model_dump() for note in result]
-        df = pd.DataFrame(data_dict)
+        return data_dict
+
+    def to_json(self, result: List[ShotFormat]) -> str:
+        df = pd.DataFrame(self.to_dict(result))
         json_result = df.to_json(orient='records', force_ascii=False)  # 'records' 格式每行一个字典
         return json_result
 
