@@ -24,32 +24,21 @@ JSX.js是提供给CEP应用的JavaScript环境一个JS库，可以代替原生�
 ### 参考链接
 
 - [Adobe Photoshop Scripting](https://www.adobe.com/devnet/photoshop/scripting.html)
-
 - [Configure your extension in manifest.xml](https://github.com/Adobe-CEP/Getting-Started-guides#2-configure-your-extension-in-manifestxml)
-
 - [CSInterface.js](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_10.x/CSInterface.js)
-
 - [Applications Integrated with CEP](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_9.x/Documentation/CEP%209.0%20HTML%20Extension%20Cookbook.md#applications-integrated-with-cep)
-
 - [JSON3](https://github.com/bestiejs/json3)
-
 - [LumpyChen/CEP-Test](https://github.com/LumpyChen/CEP-Test)
-
 - [Package Distribute Install Guide](https://github.com/Adobe-CEP/Getting-Started-guides/tree/master/Package%20Distribute%20Install#package-distribute-install-guide)
-
 - [Script Listener](https://helpx.adobe.com/photoshop/kb/downloadable-plugins-and-content.html#ScriptingListenerplugin)
-
 - [JSX.js](https://creative-scripts.com/jsx-js/)
-
 - [ExtendScript Debugger](https://marketplace.visualstudio.com/items?itemName=Adobe.extendscript-debug)
-
 - [CEP Intro](https://github.com/Adobe-CEP/CEP-Resources)
-
 - [nullice的Adobe CEP扩展开发教程](http://nullice.com/archives/category/note/%E8%BD%AF%E4%BB%B6%E6%95%99%E7%A8%8B/adobe-cep)
-
 - [Photoshop Scripting Documentation](https://www.notion.so/a908db4f72a74854b36c10e72a69b751)
-
 - [Photoshop-CC-Javascript-Ref-2019](https://wwwimages2.adobe.com/content/dam/acom/en/devnet/photoshop/pdfs/photoshop-cc-javascript-ref-2019.pdf)
-
 - [Adobe CEP | 目录结构及各文件解析](https://www.wujiayi.vip/index.php/archives/579/)
+- [Premiere Pro Scripting Guide](https://ppro-scripting.docsforadobe.dev/index.html)
+
+
 
