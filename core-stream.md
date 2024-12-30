@@ -51,4 +51,5 @@ JSX.js是提供给CEP应用的JavaScript环境一个JS库，可以代替原生�
 
 - [Photoshop-CC-Javascript-Ref-2019](https://wwwimages2.adobe.com/content/dam/acom/en/devnet/photoshop/pdfs/photoshop-cc-javascript-ref-2019.pdf)
 
+- [Adobe CEP | 目录结构及各文件解析](https://www.wujiayi.vip/index.php/archives/579/)
 
