@@ -21,8 +21,10 @@ SYSTEM_TEMPLATE = f"""你是一名新闻速记助手，请将速记内容进行�
 速记内容一般会使用指定格式给出，例如`<速记>...内容...</速记>`。
 
 输出格式为JSON：字典对象放在列表中，每个元素是一个字典对象，字典对象包含`index`、`start_time`、`end_time`、`speaker`、`content`字段）。
-时间的格式应该为`00:00:00`，如果缺少开头`0`则补充`0`。
 `index`的值应该是递增的。
+`start_time`和`end_time`时间的格式应该为`00:00:00`，如果缺少开头`0`则补充`0`。
+`speaker`表示讲话人，应该是角色名称、人物名称等。
+`content`表示说话人内容。
 """
 
 HUMAN_TEMPLATE = """<速记>
@@ -160,8 +162,8 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     load_dotenv()
-    note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果2.docx")
-    # note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果.docx")
+    # note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果2.docx")
+    note = NoteOrganizer(note_path=r"D:\workspace\AutoVidEditor\data\孙铮速记.mp3-文稿-转写结果.docx")
     result = note.run()
     print(result)
     print(note.to_dataframe(result))

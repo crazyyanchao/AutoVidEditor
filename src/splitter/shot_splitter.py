@@ -2,7 +2,7 @@ import json
 import re
 import logging
 from concurrent.futures import ThreadPoolExecutor
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import pandas as pd
 from docx import Document
@@ -23,8 +23,9 @@ SYSTEM_TEMPLATE = f"""你是一名财经新闻视频助手，可以按照文字�
 
 输出格式为JSON：字典对象放在列表中，index、speaker、content。
 `index`的值应该是递增的。
-`speaker`表示讲话人。
-`content`表示当前镜头语言，是数组，只保留说话人内容即可。
+`speaker`表示讲话人，应该是角色名称、人物名称等。
+`content`表示说话人内容，可能是数组，每个数组保存一个字典包含`start_time`和`text`字段，当文字中出现`[cut]`时需要拆分为多段。
+`content`中需要保存的`start_time`表示说话人开始说话的时间，时间格式应该为`00:00:00`，如果缺少开头`0`则补充`0`。
 """
 
 HUMAN_TEMPLATE = """<正片>
@@ -44,12 +45,16 @@ PROMPT = ChatPromptTemplate.from_messages(
 )
 
 
+class Content(BaseModel):
+    start_time: Optional[str] = Field(
+        description="开始时间，作为视频分段匹配时的参考字段，有值时在片段匹配时可以多一个参考")
+    text: str = Field(description="内容")
+
+
 class ShotFormat(BaseModel):
     index: int = Field(description="序号")
-    # start_time: str = Field(description="开始时间")
-    # end_time: str = Field(description="结束时间")
     speaker: str = Field(description="说话人")
-    content: List[str] = Field(description="内容")
+    content: List[Content] = Field(description="内容，一般表示`[cut]`的不同说话内容，可以是顺序的多段")
 
 
 class ShotSplitter:
@@ -155,8 +160,8 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
 
     load_dotenv()
-    # spliter = ShotSplitter(note_path=r"D:\workspace\AutoVidEditor\data\【制作文案】刘健钧-科创投资八问.docx")
-    spliter = ShotSplitter(note_path=r"D:\workspace\AutoVidEditor\data\【制作文案】刘健钧-科创投资八问2.docx")
+    spliter = ShotSplitter(note_path=r"D:\workspace\AutoVidEditor\data\【制作文案】刘健钧-科创投资八问.docx")
+    # spliter = ShotSplitter(note_path=r"D:\workspace\AutoVidEditor\data\【制作文案】刘健钧-科创投资八问2.docx")
     result = spliter.run()
     print(result)
     print(spliter.to_dataframe(result))
