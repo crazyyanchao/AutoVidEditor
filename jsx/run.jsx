@@ -1,5 +1,8 @@
 
 #include http.js
+#include utils.jsx
+#include tracks.jsx
+#include import.jsx
 
 function run() {
     // ============================自定义配置============================
@@ -17,12 +20,14 @@ function run() {
     // }
     videoFileMap={
         "video1":[mp4,mp42],
-        "video2":[mp4,mp42]
+        "video2":[mp4,mp42],"video3":[mp4,mp42]
     }
     // 文字速记文件
     noteFilePath="D:\\workspace\\AutoVidEditor\\data\\note.json";
     // 成片脚本文件
     shotFilePath="D:\\workspace\\AutoVidEditor\\data\\shot.json";
+    // 文字速记和成片脚本的关联文件
+    
 
     // ============================Automated Video Editor============================
     runAutoVidEditor(projectPath,audioFolder,videoFileMap,noteFilePath,shotFilePath);
@@ -36,196 +41,17 @@ function runAutoVidEditor(projectPath,audioFolder,videoFileMap,noteFilePath,shot
     importVideo(videoFileMap);
 
     // 3. 将视频文件导入到时间线轨道
-    importVideoToTimeline(videoFileMap);
+    // importVideoToTimeline(videoFileMap);
+    importVideoToTracks(videoFileMap);
 
     // 4. 匹配速记与视频
-    importShot(noteFilePath, videoFileMap);
+    // importShot(noteFilePath, videoFileMap);
 
     // 5. 剪辑视频素材
-    editVideo(shotFilePath,videoFileMap);
+    // editVideo(shotFilePath,videoFileMap);
 
     // 6. 保存工程文件
-    saveProject(projectPath);
-}
-
-function createProject(projectPath) {
-    try {
-        var projectFile = new File(projectPath);
-
-        // 检查项目文件是否已经存在
-        if (projectFile.exists) {
-            // 删除已存在的项目文件
-            projectFile.remove();
-            // alert("已删除旧项目文件: " + projectPath);
-        }
-
-        // 创建新的 PR 项目
-        app.newProject(projectPath);
-        // alert("新项目已创建: " + projectPath);
-        
-    } catch (error) {
-        // 捕获并提示错误
-        alert("创建项目时发生错误: " + error.message);
-    }
-}
-
-function saveProject(projectPath) {
-    try {
-        // 保存项目文件
-        app.project.saveAs(projectFilePath);
-        // alert("项目已保存: " + projectPath);
-    } catch (error) {
-        // 捕获并提示错误
-        alert("保存项目时发生错误: " + error.message);
-    }
-}
-
-function importVideo(videoFileMap) {
-    // 导入视频文件，至指定文件夹
-    try {
-        // 检查 videoFileMap 是否为空
-        var isEmpty = true;
-        for (var key in videoFileMap) {
-            if (videoFileMap.hasOwnProperty(key)) {
-                isEmpty = false;
-                break;
-            }
-        }
-        if (isEmpty) {
-            alert("没有提供任何视频文件路径。");
-            return;
-        } else {
-            // 显示 videoFileMap 的内容
-            var mapContent = "";
-            for (var key in videoFileMap) {
-                if (videoFileMap.hasOwnProperty(key)) {
-                    mapContent += key.toUpperCase() + ": " + videoFileMap[key] + "\n";
-                }
-            }
-            // alert("视频文件：\n" + mapContent);
-        }
-        // 导入视频文件
-        var count = 0;
-        for (var key in videoFileMap) {
-            if (videoFileMap.hasOwnProperty(key)) {
-                var filePaths = videoFileMap[key];
-                // alert("正在导入：" + filePaths);
-                // 获取当前项目和根目录
-                var project = app.project;
-                var rootItem = project.rootItem;
-
-                // 获取文件夹（Bin）并删除现有文件夹
-                var existingFolder = getBinByName(rootItem, key);
-                if (existingFolder) {
-                    // 删除已存在的文件夹及其内容
-                    deleteBinAndContents(existingFolder);
-                    // alert("已删除文件夹：" + key);
-                }
-
-                // 创建文件夹（Bin）
-                var newFolder = rootItem.createBin(key);
-
-                // 导入文件到指定文件夹
-
-                var importedFiles = app.project.importFiles(filePaths, true, newFolder);
-                count += filePaths.length;
-
-                // alert("<" + key + ">视频文件已成功导入到文件夹: " + key + "，文件数：" + filePaths.length);
-            }
-        }
-        // 提示导入成功
-        // alert("视频文件已成功导入到文件夹，文件数总计：" + count);
-    } catch (error) {
-        // 捕获任何错误并提示
-        alert("导入视频时发生错误: " + error.message);
-    }
-}
-
-// 删除文件夹及其所有内容
-function deleteBinAndContents(bin) {
-    try {
-        if (!bin || !bin.children) {
-            throw new Error("文件夹不存在或未正确加载");
-        }
-
-        var items = bin.children;
-        // 删除文件夹中的所有子项
-        for (var i = items.numItems - 1; i >= 0; i--) {
-            if (items[i] && typeof items[i].remove === "function") {
-                items[i].deleteBin();
-            }
-        }
-        bin.deleteBin(); // 删除空文件夹
-    } catch (error) {
-        alert("删除文件夹时发生错误: " + error.message);
-    }
-}
-
-function importVideoToTimeline(videoFileMap) {
-    // 将视频文件添加到时间线轨道
-    try {
-        var count = 0;
-
-        // 遍历 videoFileMap 来处理已导入的视频文件
-        // 每个folderName对应的视频放在一个轨道上，同一时间轴上播放
-        
-        for (var folderName in videoFileMap) {
-            if (videoFileMap.hasOwnProperty(folderName)) {
-                // 创建序列文件夹
-                var newFolder = createSequenceFolder(folderName);
-                // 获取文件夹名称
-                var bin = getBinByName(app.project.rootItem, folderName);
-                if (!bin) {
-                    alert("未找到文件夹：" + folderName);
-                    continue; // 如果找不到文件夹，跳过
-                } else {
-                    // alert("文件夹：" + folderName);
-                }
-
-                // 获取文件夹中的所有视频文件
-                var videoFiles = bin.children;
-                var arrayOfProjectItems = [];
-                for (var i = 0; i < videoFiles.numItems; i++) {
-                    var videoFile = videoFiles[i];
-                    arrayOfProjectItems.push(videoFile);
-                    count++;
-                }
-                var sequence = app.project.createNewSequenceFromClips(folderName, arrayOfProjectItems, newFolder);
-            }
-        }
-
-        // 提示导入成功
-        // alert("视频文件已成功添加到时间线轨道，文件数总计：" + count);
-
-    } catch (error) {
-        // 捕获任何错误并提示
-        alert("添加视频到时间线时发生错误: " + error.message);
-    }
-}
-
-function createSequenceFolder(folderName) {
-    // 创建保存序列的文件夹
-    folderSequence = "sequences-" + folderName;
-    var existingFolder = getBinByName(app.project.rootItem, folderSequence);
-    if (existingFolder) {
-        deleteBinAndContents(existingFolder);
-        // alert("已删除文件夹：" + key);
-    }
-    var project = app.project;
-    var rootItem = project.rootItem;
-    var newFolder = rootItem.createBin(folderSequence);
-    return newFolder
-}
-
-// 根据文件夹名称获取已存在的文件夹（Bin）
-function getBinByName(rootItem, binName) {
-    for (var i = 0; i < rootItem.children.numItems; i++) {
-        if (rootItem.children[i].name === binName) {
-            result = rootItem.children[i];
-            return result
-        }
-    }
-    return null; // 如果没有找到，返回 null
+    // saveProject(projectPath);
 }
 
 function importShot(noteFilePath, videoFileMap) {
@@ -349,7 +175,7 @@ function editVideo(shotFilePath, videoFileMap) {
         //             clip.outPoint = endTime;
         //         }
         //     });
-        });
+        // });
 
         editVideoClip(shotData, videoData);
 

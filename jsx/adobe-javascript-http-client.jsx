@@ -42,3 +42,6 @@ alert("脚本执行结果：\n" + resultContent);
 // 可选：删除临时文件
 // resultFile.remove();
 // file.remove();
+// d:
+// cd D:\workspace\AutoVidEditor
+// C:\Users\admin\miniconda3\envs\AutoVidEditor\python.exe src/organizer/note_organizer.py
