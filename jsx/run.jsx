@@ -20,7 +20,8 @@ function run() {
     // }
     videoFileMap={
         "video1":[mp4,mp42],
-        "video2":[mp4,mp42],"video3":[mp4,mp42]
+        "video2":[mp4,mp42],
+        "video3":[mp4,mp42]
     }
     // 文字速记文件
     noteFilePath="D:\\workspace\\AutoVidEditor\\data\\note.json";
@@ -41,7 +42,6 @@ function runAutoVidEditor(projectPath,audioFolder,videoFileMap,noteFilePath,shot
     importVideo(videoFileMap);
 
     // 3. 将视频文件导入到时间线轨道
-    // importVideoToTimeline(videoFileMap);
     importVideoToTracks(videoFileMap);
 
     // 4. 匹配速记与视频

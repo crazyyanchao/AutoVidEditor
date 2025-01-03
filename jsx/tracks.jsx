@@ -79,95 +79,27 @@ function placeMultipleClips(trackId,folderName,videoFileMap) {
     if (videoFileMap.hasOwnProperty(folderName)) {
         // 创建序列文件夹
         var newFolder = createSequenceFolder(folderName);
-        // 获取文件夹名称
+        // 获取文件夹
         var bin = getBinByName(app.project.rootItem, folderName);
         if (bin) {
             // 获取文件夹中的所有视频文件
             var videoFiles = bin.children;
             var startTime = 0; // 起始时间
-            for (var i = 0; i < videoFiles.numItems; i++) {
+            for (var i = videoFiles.numItems-1; i>=0; i--) {
                 var videoFile = videoFiles[i];
                 var track = activeSequence.videoTracks[trackId];
-                alert(videoFile.name);
-                track.insertClip(videoFile, startTime);
-                
-                // var mediaFile = app.project.importFiles([videoFile], true); // 1 表示导入并转换媒体文件
-                // var duration = mediaFile[0].duration.seconds; // 获取转换后的文件时长
-                // alert("end_time: " + duration);
-                // startTime += duration; // 更新起始时间
+                track.insertClip(videoFile, 0);
             }
         }
     }
 }
-
-// function placeMultipleClips(trackId, folderName, videoFileMap) {
-//     // 获取当前活动序列
-//     var activeSequence = app.project.activeSequence;
-    
-//     // 检查是否有该文件夹
-//     if (videoFileMap.hasOwnProperty(folderName)) {
-//         // 创建序列文件夹
-//         var newFolder = createSequenceFolder(folderName);
-        
-//         // 获取文件夹
-//         var bin = getBinByName(app.project.rootItem, folderName);
-//         if (bin) {
-//             // 获取文件夹中的所有视频文件
-//             var videoFiles = bin.children;
-//             var startTime = 0; // 初始时间
-            
-//             // 检查是否获取到文件
-//             if (videoFiles && videoFiles.numItems > 0) {
-//                 for (var i = 0; i < videoFiles.numItems; i++) {
-//                     var videoFile = videoFiles[i];
-                    
-//                     // 确保 videoFile 是有效的媒体项目
-//                     if (videoFile instanceof ProjectItem) {
-//                         // 更严格的检查是否为媒体文件（例如 .mp4 文件）
-//                         alert('videoFile.isMedia: '+videoFile.isMedia)
-//                         alert('videoFile.type: '+videoFile.type)
-//                         if (videoFile.isMedia && videoFile.type === "File") {
-//                             // 获取轨道
-//                             var track = activeSequence.videoTracks[trackId];
-                            
-//                             // 插入视频片段
-//                             alert("Inserting: " + videoFile.name);
-//                             track.insertClip(videoFile, startTime);
-
-//                             // 确保 videoFile 有 duration 属性，并且 duration 秒数有效
-//                             if (videoFile.duration && videoFile.duration.seconds !== undefined) {
-//                                 var endTime = videoFile.duration.seconds;
-//                                 alert("End time: " + endTime);
-//                                 startTime += endTime; // 更新起始时间
-//                             } else {
-//                                 alert("Error: Duration is not defined for " + videoFile.name);
-//                             }
-//                         } else {
-//                             alert("Skipping non-media item: " + videoFile.name);
-//                         }
-//                     } else {
-//                         alert("Skipping non-media item: " + videoFile.name);
-//                     }
-//                 }
-//             } else {
-//                 alert("No video files found in the folder: " + folderName);
-//             }
-//         } else {
-//             alert("Folder not found: " + folderName);
-//         }
-//     } else {
-//         alert("Folder name not found in videoFileMap: " + folderName);
-//     }
-// }
-
-
 
 function createNewSequenceFromClips(folderName,videoFileMap) {
     // 创建新的序列，将视频文件添加到序列中【模拟终端的拖入视频操作】
     if (videoFileMap.hasOwnProperty(folderName)) {
         // 创建序列文件夹
         var newFolder = createSequenceFolder(folderName);
-        // 获取文件夹名称
+        // 获取文件夹
         var bin = getBinByName(app.project.rootItem, folderName);
         if (bin) {
             // 获取文件夹中的所有视频文件
